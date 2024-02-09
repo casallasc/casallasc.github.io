@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Activar tarjeta</title>
+</head>
+<body>
+  <h1>Activar tarjeta</h1>
+  <form action="#">
+    <label for="card_number">Número de tarjeta:</label>
+    <input type="text" id="card_number" name="card_number" required>
+    <br>
+    <label for="card_pin">PIN de la tarjeta:</label>
+    <input type="password" id="card_pin" name="card_pin" required>
+    <br><br>
+    <label for="success_link">Link de éxito (opcional):</label>
+    <input type="text" id="success_link" name="success_link" value="app://success">
+    <br><br>
+    <button type="submit">Activar</button>
+  </form>
+
+  <script>
+    function activarTarjeta(cardNumber, cardPin, successLink) {
+
+      // Deshabilitar botón y cambiar texto
+      const button = document.querySelector('button');
+      button.disabled = true;
+      button.textContent = "Activando tarjeta...";
+
+      // Simular espera de 1.5 segundos
+      setTimeout(() => {
+        // Generar deeplink
+        const deeplink = `app://open?cardId=crd-${cardNumber}`;
+
+        // Generar successLink con ID de la tarjeta
+        const successLinkWithId = `${successLink}?cardId=crd-${cardNumber}`;
+
+        // Navegar al deeplink
+        if (successLinkWithId) {
+          window.location.href = successLinkWithId;
+        } else {
+          window.location.href = deeplink;
+        }
+      }, 1000);
+    }
+
+    const form = document.querySelector('form');
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const cardNumber = document.querySelector('#card_number').value;
+      const cardPin = document.querySelector('#card_pin').value;
+      const successLink = document.querySelector('#success_link').value;
+
+      activarTarjeta(cardNumber, cardPin, successLink);
+    });
+  </script>
+</body>
+</html>
